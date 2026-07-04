@@ -1,0 +1,408 @@
+---
+title: "Exercise3.2"
+author: "M Mendez"
+date: "2025-09-25"
+output: html_document
+---
+Show the distributions of values visually. Explain, in comments, what those distributions mean statistically. Be thorough.
+What do the distributions mean statistically? 
+I have taken the mean, minimum, and maximum of each quantitative value . These graphs allow the user to see the range of Total Sales from each OrderId. I have added a line on each to display the mean, min, and max. 
+```{r}
+library(tidyverse)
+library(dplyr)
+sales <- read.csv('sales_data_sample.csv')
+
+#TotalSales 
+unitmean <- mean(sales$TotalSales)
+unitmin <- min(sales$TotalSales)
+unitmax <- max(sales$TotalSales)
+
+# hist(sales$TotalSales, 
+#      xlab = "Mean Sales",
+#      main = paste("Sales"))
+# abline( v = unitmean, col = 'red', lwd =2)
+# 
+# print(unitmean)
+# 
+# hist(sales$TotalSales, 
+#      xlab = "Minimum Unit Sales",
+#      main = paste("Minimum Sales"))
+# abline( v = unitmin, col = 'red', lwd = 2)
+# 
+# print(unitmin)
+# 
+# hist(sales$TotalSales, 
+#      xlab = "Maximum Unit Sales",
+#      main = paste("Maximum Sales"))
+# abline( v = unitmax, col = 'red', lwd = 2)
+# 
+# print(unitmax)
+
+ggplot(sales, aes(x = TotalSales)) +
+  ggtitle('Total Sales') +
+  labs(subtitle = 'Mean, Min, and Max') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$TotalSales)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = min(sales$TotalSales)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = max(sales$TotalSales)) +
+  labs(caption = "Blue line is the mean, Orange is min, and Green is the max.")
+
+print(unitmin)
+print(unitmax)
+print(unitmean)
+
+#Quantity
+unitmin1 <- min(sales$Quantity)
+unitmax1 <- max(sales$Quantity)
+unitmean1 <- mean(sales$Quantity)
+
+# hist(sales$Quantity, 
+#      xlab = " Mean Qty",
+#      main = paste("Qty"))
+# abline( v = unitmean1, col = 'red', lwd = 2)
+# 
+# print(unitmean1)
+# 
+# hist(sales$Quantity, 
+#      xlab = "Minimum Qty",
+#      main = paste("Minimum Qty"))
+# abline( v = unitmin1, col = 'red', lwd = 2)
+# 
+# print(unitmin1)
+# 
+# hist(sales$Quantity, 
+#      xlab = "Maximum Qty",
+#      main = paste("Maximum Qty"))
+# abline( v = unitmax1, col = 'red', lwd = 2)
+
+# print(unitmax1)
+
+ggplot(sales, aes(x = Quantity)) +
+  ggtitle('Quantity') +
+  labs(subtitle = 'Mean, Min, and Max') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$Quantity)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = min(sales$Quantity)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = max(sales$Quantity)) +
+  labs(caption = "Blue line is the mean, Orange is min, and Green is the max.")
+
+print(unitmin1)
+print(unitmax1)
+print(unitmean1)
+
+#UnitPrice
+unitmin2 <- min(sales$UnitPrice)
+unitmax2 <- max(sales$UnitPrice)
+unitmean2 <- mean(sales$UnitPrice)
+
+ggplot(sales, aes(x = UnitPrice)) +
+  ggtitle('Unit Price') +
+  labs(subtitle = 'Mean, Min, and Max') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$UnitPrice)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = min(sales$UnitPrice)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = max(sales$UnitPrice)) +
+  labs(caption = "Blue line is the mean, Orange is min, and Green is the max.")
+
+print(unitmin2)
+print(unitmax2)
+print(unitmean2)
+# hist(sales$UnitPrice, 
+#      xlab = "Mean Unit Price",
+#      main = paste("Unit Price"))
+# abline( v = unitmean2, col = 'red', lwd = 2) +
+# 
+# 
+# print(unitmean2)
+# 
+# hist(sales$UnitPrice, 
+#      xlab = "Minimum Price",
+#      main = paste("Minimum Price"))
+# abline( v = unitmin1, col = 'red', lwd = 2)
+# 
+# print(unitmin1)
+# 
+# hist(sales$UnitPrice, 
+#      xlab = "Maximum Price",
+#      main = paste("Maximum Price"))
+# abline( v = unitmax1, col = 'red', lwd = 2)
+# 
+# print(unitmax1)
+
+```
+Show the values of central tendency, both numerically and visually. Interpret those values in your own words in Markdown.
+Mode of Product shows the frequency of the product 
+Mean of Unit Prices provides insight to the mean price by the units provided
+Median of Total Sales provies insight to show the total sales are a little less than $500
+```{r}
+
+prodsales <- sales %>%
+  group_by(Product) %>%
+  summarise(mean(TotalSales))
+
+#assistance from https://www.youtube.com/watch?v=y5yFOVbxTIg 
+#Mode
+MProd <- table(sales$Product)
+Mqty <- table(sales$Quantity)
+MTotal <- table(sales$TotalSales)
+MUnit <- table(sales$UnitPrice)
+
+
+barplot(height=MProd, names = prodsales$Product,
+        xlab = "Product (Mode)", 
+        ylab = 'Sales',
+     main = paste("Mode of Product"))
+
+print(MProd)
+
+barplot(height=Mqty,
+        xlab = "Quantity (Mode)", 
+        ylab = 'Sales',
+     main = paste("Mode of Quantity"))
+
+print(Mqty)
+
+barplot(height=MTotal,
+        xlab = "Total (Mode)", 
+        ylab = 'Sales',
+     main = paste("Mode of Total"))
+
+print(MTotal)
+
+barplot(height=MUnit,
+        xlab = "Unit Price (Mode)", 
+        ylab = 'Sales',
+     main = paste("Mode of Unit Price"))
+
+print(MUnit)
+
+
+#Mean
+
+MePrice <- mean(sales$UnitPrice)
+MeSales <- mean(sales$TotalSales)
+MeQty <- mean(sales$Quantity)
+
+sales$Year <- as.Date(sales$OrderDate, format = "%m/%d/%Y")
+class(sales$Year)
+sales$Year <- format(sales$Year, "%Y")
+
+annualsales <- sales %>%
+  group_by(Year) %>%
+  summarise(mean(TotalSales))
+
+annualprice <- sales %>%
+  group_by(Year) %>%
+  summarise(mean(UnitPrice))
+            
+annualqty <- sales %>%
+  group_by(Year) %>%
+  summarise(mean(Quantity))
+
+
+barplot(height = annualsales$`mean(TotalSales)`, names = annualsales$Year,
+        xlab = "Year", 
+        ylab = 'Sales',
+     main = paste("Mean of Sales X Year"))
+
+barplot(height = annualprice$`mean(UnitPrice)`, names = annualsales$Year,
+        xlab = "Year", 
+        ylab = 'Sales',
+     main = paste("Mean of Unit Price X Year"))
+
+barplot(height = annualqty$`mean(Quantity)`, names = annualsales$Year,
+        xlab = "Year", 
+        ylab = 'Sales',
+     main = paste("Mean of Quantity X Year"))
+
+
+
+#Median 
+
+Qty <- boxplot(sales$Quantity, 
+              main = paste("Median of Quantity")
+              )
+abline (h = mean(sales$Quantity), col='red', lwd =2)
+print(mean(sales$Quantity))
+
+Qty <- boxplot(sales$UnitPrice, 
+              main = paste("Median of Price")
+              )
+abline (h = mean(sales$UnitPrice), col= 'red', lwd =2)
+print(mean(sales$UnitPrice))
+
+Qty <- boxplot(sales$TotalSales, 
+              main = paste("Median of Total Sales")
+              )
+abline (h = mean(sales$TotalSales), lwd =2)
+print(median(sales$TotalSales))
+print(median(sales$UnitPrice))
+print(median(sales$Quantity))
+
+```
+Show the measures of dispersion, visually and numerically (where appropriate). Interpret those values in Markdown.
+I used standard deviation to show the measure of dispersion by Region 
+```{r}
+
+sales$Year.factor <- factor(sales$Year)
+sales$region.factor <- factor(sales$Region)
+sales$prod.factor <- factor(sales$Product)
+
+x <- sales %>%
+  group_by(region.factor) %>%
+  summarise(sd(Quantity))
+plot(x, sales$region.factor, 
+     xlab = 'Region',
+     ylab = 'Standard Deviation')
+print(sd(sales$Quantity))
+
+y<- sales %>%
+  group_by(region.factor) %>%
+  summarise(sd(UnitPrice))
+plot(y, sales$region.factor, 
+     xlab = 'Region',
+     ylab = 'Standard Deviation')
+print(sd(sales$UnitPrice))
+
+z <- sales %>%
+  group_by(region.factor) %>%
+  summarise(sd(TotalSales))
+plot(z, sales$region.factor, 
+     xlab = 'Region',
+     ylab = 'Standard Deviation')
+print(var(sales$TotalSales))
+
+```
+Visually depict the Interquartile range. Interpret the IQR for the dataset (in Markdown).
+I used the IQR to understand the IQR for the Total Sales, Unit Price, and Quantity. At first, I tried region but by Product made more sense to provide as the IQR. 
+```{r}
+
+sales$region.factor <- factor(sales$Region)
+sales$prod.factor <- factor(sales$Product)
+
+#TotalSales 
+IQR_Region <- aggregate(sales$TotalSales, by=list(Regs = sales$region.factor), FUN = IQR)
+print(IQR_Region)
+
+boxplot(x~ Regs, data = IQR_Region,
+        main = "Total Sales IQR by Region",
+        xlab = 'Region',
+        ylab = 'IQR Total Sales')
+abline(h = mean(IQR_Region$x), col = 'red', lwd = 3)
+barplot(height = IQR_Region$x, names = IQR_Region$Regs)
+
+#UnitPrice
+IQR_Region1 <- aggregate(sales$UnitPrice, by=list(Regs = sales$prod.factor), FUN = IQR)
+print(IQR_Region1)
+
+boxplot(x~ Regs, data = IQR_Region1,
+        main = "Unit Price IQR by Region",
+        xlab = 'Products',
+        ylab = 'IQR Unit Price')
+abline(h = mean(IQR_Region1$x), col = 'red', lwd = 3)
+
+barplot(height = IQR_Region1$x, names = IQR_Region1$Regs)
+#Quantity 
+
+IQR_Region2 <- aggregate(sales$Quantity, by=list(Regs = sales$prod.factor), FUN = IQR)
+print(IQR_Region2)
+
+boxplot(x~ Regs, data = IQR_Region2,
+        main = "Quantity IQR by Region",
+        xlab = 'Products',
+        ylab = 'IQR Quantity')
+abline(h = mean(IQR_Region2$x), col = 'red', lwd = 3)
+
+barplot(height = IQR_Region2$x, names = IQR_Region2$Regs)
+```
+Create the statistics moments for the dataset.
+Created the stats moment for Quantity, Unit Price, and Total Sales.
+```{r}
+# Youtube : https://youtu.be/gT5MXDzrN88?feature=shared
+
+#Quantity
+mean(sales$Quantity)
+median(sales$Quantity)
+sd(sales$Quantity)
+
+
+ggplot(sales, aes(x = Quantity)) +
+  ggtitle('Stats Moments') +
+  labs(subtitle = 'Stats Moments of Quantity') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$Quantity)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = median(sales$Quantity)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = sd(sales$Quantity))
+
+
+#UnitPrice
+
+mean(sales$UnitPrice)
+median(sales$UnitPrice)
+sd(sales$UnitPrice)
+
+ggplot(sales, aes(x = UnitPrice)) +
+  ggtitle('Stats Moments') +
+  labs(subtitle = 'Stats Moments of Unit Price') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$UnitPrice)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = median(sales$UnitPrice)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = sd(sales$UnitPrice))
+ 
+
+#TotalSales
+
+mean(sales$TotalSales)
+median(sales$TotalSales)
+sd(sales$TotalSales)
+
+ggplot(sales, aes(x = TotalSales)) +
+  ggtitle('Stats Moments') +
+  labs(subtitle = 'Stats Moments of Total Sales') +
+  geom_histogram(fill = 'gray') +
+  geom_vline(linetype = 'dashed', color = 'blue', xintercept = mean(sales$TotalSales)) +
+  geom_vline(linetype = 'dashed', color = 'orange', xintercept = median(sales$TotalSales)) +
+  geom_vline(linetype = 'dashed', color = 'green', xintercept = sd(sales$TotalSales))
+  labs(caption = "blue line is mean and orange is median.")
+
+```
+
+Experiment with histogram binning for the categorical data in R. This is open-ended intentionally because this dataset isn’t ideal for binning, but I want you to build something using binning just to see how it works.
+
+```{r}
+# sales$region.num <- factor(sales$Region)
+# sales$prod.num <- factor(sales$Product)
+# sales$Date.num <- factor(sales$OrderDate)
+# sales$ID.num <- factor(sales$OrderID)
+
+# https://stackoverflow.com/questions/34867308/how-to-make-grouped-bins-in-histogram-in-r-with-a-variable-other-than-frequency
+cut_number(sales$TotalSales, 
+           n = 10) %>%
+          table()
+sales <- sales %>%
+  mutate(SalesCut = cut_number(sales$TotalSales, 
+                              n = 50))
+
+
+salesbin <- sales %>%
+  group_by(SalesCut, TotalSales, Product, UnitPrice, Quantity) %>%
+  summarise(avgTotal = mean(sales$TotalSales))
+
+
+ggplot(salesbin, aes(x = Product,
+                  y = TotalSales,
+                  group=salesbin$SalesCut,
+                  fill = factor(salesbin$SalesCut))) +
+    geom_bar(stat = 'identity')
+
+ggplot(salesbin, aes(x = Product,
+                  y = UnitPrice,
+                  group=salesbin$SalesCut,
+                  fill = factor(salesbin$SalesCut))) +
+  geom_bar(stat = 'identity')
+
+```
+
+
+
+
