@@ -1,6 +1,7 @@
 # DescartesMeltingCandle
 My Melting Candles
 Welcome to my portfolio. The following projects are the some of my initial works starting in Data Science. There is a mix of R and Python. The primary presentation use is Jupyter Lab. Thank you for your consideration.
+/n
 For 2.GAI-PromptImages
   The goal of the project is to create the same image using different GAI to see how the results are returned. Each GAI was provided with the same prompt to determine the results. The differences and simliarites are explained in a short summary at the end of the file. 
 For FamedArtist
