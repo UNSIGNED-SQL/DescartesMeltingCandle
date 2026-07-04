@@ -1,5 +1,5 @@
 # DescartesMeltingCandle
-##My Melting Candles##
+## My Melting Candles
 &emsp; Welcome to my portfolio. The following projects are the some of my initial works starting in Data Science. There is a mix of R and Python. The primary presentation use is Jupyter Lab. Thank you for your consideration. 
 
 ***For 2.GAI-PromptImages***  
